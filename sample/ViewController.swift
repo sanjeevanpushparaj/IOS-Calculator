@@ -1,9 +1,11 @@
 //
 //  ViewController.swift
-//  sample
-//
-//  Created by Sanjeevan Pushparaj on 24/09/21.
-//
+//  File name - sample
+//  Module Name - MAPD 714
+//  Author's Name - Sanjeevan Pushparaj
+//  Student ID - 301213104
+//  Date - 25/09/2021
+//  App description - GUI for a simple calculator application
 
 import UIKit
 
