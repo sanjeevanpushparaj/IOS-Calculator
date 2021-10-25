@@ -24,7 +24,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var btn2: UIButton!
     @IBOutlet weak var btn1: UIButton!
     @IBOutlet weak var textView: UILabel!
+    @IBOutlet weak var lView: UILabel!
     
+    //creating the variables for use inside actions
     var display:Double=0
     var exDisplay:Double=0
     var result=false
@@ -32,28 +34,66 @@ class ViewController: UIViewController {
     var check:Double=0
     var temp:String=""
     
-    
+    //function to catch the input numbers
     @IBAction func numbers(_ sender: UIButton) {
         
         if result==true{
-            
-            textView.text=String(sender.tag-1)
-            display=Double(textView.text!)!
-            result=false
+            if sender.tag==30{
+                textView.text="3.14159265"
+                lView.text="3.14159265"
+                display=Double(textView.text!)!
+                display=Double(lView.text!)!
+                result=false
+            }
+            else{
+                textView.text=String(sender.tag-1)
+                lView.text=String(sender.tag-1)
+                display=Double(textView.text!)!
+                display=Double(lView.text!)!
+                result=false
+            }
         }
         else if sender.tag==20{
             
             textView.text = textView.text!+"."
+            lView.text = lView.text!+"."
+            
             display=Double(textView.text!)!
+            display=Double(lView.text!)!
+        }
+        else if sender.tag==18{
+            display=display*(-1)
+            textView.text=String(display)
+            lView.text=String(display)
         }
         else{
-            textView.text = textView.text! + String(sender.tag-1)
-            display=Double(textView.text!)!
+            if sender.tag==30{
+                textView.text="3.14159265"
+                lView.text="3.14159265"
+                display=Double(textView.text!)!
+                display=Double(lView.text!)!
+            }
+            else if ((sender.tag==31)||(sender.tag==32)||(sender.tag==33)||(sender.tag==34)||(sender.tag==35)){
+                display=Double(textView.text!)!
+                display=Double(lView.text!)!
+            }
+            else if sender.tag==36{
+                display=Double.random(in: 0...1)
+                textView.text=String(display)
+                lView.text=String(display)
+            }
+            else
+            {
+                textView.text = textView.text! + String(sender.tag-1)
+                lView.text = lView.text! + String(sender.tag-1)
+                display=Double(textView.text!)!
+                display=Double(lView.text!)!
+            }
         }        
        
     }
     
-    
+    //function to catch the input operations
     @IBAction func operation(_ sender: UIButton) {
         
         if textView.text != "" && ((sender.tag>10 && sender.tag<15)||(sender.tag==17)){
@@ -102,25 +142,98 @@ class ViewController: UIViewController {
             }
             
         }
-        else if sender.tag==16{
+        //landscape mode
+        if lView.text != "" && ((sender.tag>10 && sender.tag<15)||(sender.tag==17)){
+            
+            exDisplay=Double(lView.text!)!
+            if sender.tag==11{
+                lView.text="+"
+            }
+            if sender.tag==12{
+                lView.text="-"
+            }
+            if sender.tag==13{
+                lView.text="*"
+            }
+            if sender.tag==14{
+                lView.text="÷"
+            }
+            if sender.tag==17{
+                lView.text="%"
+            }
+            calculation=sender.tag
+            result=true
+        }
+        else if sender.tag==15{
+            
+            if calculation==11{
+                check=Double(exDisplay+display)
+                lView.text=formatResult(result:check)
+            }
+            if calculation==12{
+                check=Double(exDisplay-display)
+                lView.text=formatResult(result:check)
+
+            }
+            if calculation==13{
+                check=Double(exDisplay*display)
+                lView.text=formatResult(result:check)
+            }
+            if calculation==14{
+                check=Double(exDisplay/display)
+                lView.text=formatResult(result:check)
+            }
+            if calculation==17{
+                check=Double((exDisplay/100)*display)
+                lView.text=formatResult(result:check)
+            }
+            
+        }
+        if sender.tag==16{
             textView.text=""
+            lView.text=""
             exDisplay=0
             display=0
             calculation=0
-        }
-        else if sender.tag==18{
-            display=display*(-1)
-            textView.text=String(display)
         }
         else if sender.tag==19{
             temp=textView.text!
             temp.removeLast()
             textView.text=temp
-            
+            lView.text=temp
+            display=Double(lView.text!)!
         }
+        else if sender.tag==31{
+            check=display*display
+            textView.text=formatResult(result: check)
+            lView.text=formatResult(result: check)
+        }
+        else if sender.tag==32{
+            check=display.squareRoot()
+            textView.text=formatResult(result: check)
+            lView.text=formatResult(result: check)
+        }
+        else if sender.tag==33{
+            check=sin(display)
+            textView.text=formatResult(result: check)
+            lView.text=formatResult(result: check)
+        }
+        else if sender.tag==34{
+            check=cos(display)
+            textView.text=formatResult(result: check)
+            lView.text=formatResult(result: check)
+        }
+        else if sender.tag==35{
+            check=tan(display)
+            textView.text=formatResult(result: check)
+            lView.text=formatResult(result: check)
+        }
+        
+        
         
     }
     
+    //function to round off to 8 decimal places
     func formatResult(result: Double) -> String
     {
         if(result.truncatingRemainder(dividingBy: 1) == 0)
